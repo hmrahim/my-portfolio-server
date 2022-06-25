@@ -21,9 +21,13 @@ try {
        }
 
        const skillCollection = client.db("portfolio").collection("skills")
+       const imagesCollection = client.db("portfolio").collection("images")
+      
 
 
-
+// ==================skill api===========================
+// ==================skill api===========================
+// ==================skill api===========================
 
        app.post("/skill",async(req,res)=> {
         const obj = req.body
@@ -64,6 +68,35 @@ try {
         const data = await skillCollection.deleteOne({_id: ObjectId(id)})
         res.send(data)
     })
+
+
+
+    // =======================images api=======================
+    // =======================images api=======================
+
+app.get("/images",async(req,res)=> {
+    const data = await imagesCollection.find().toArray()
+    res.send(data)
+
+})
+
+    app.put("/images/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const option = {upsert:true}
+        const query = {_id: ObjectId(id)}
+        const docds = {
+            $set:{
+                logo:body.logo,
+                banner:body.banner,
+                about:body.about
+            }
+        }
+        const result =await imagesCollection.updateOne(query,docds,option)
+        res.send(result)
+    })
+
+
     
 } finally{
 
