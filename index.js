@@ -32,11 +32,33 @@ try {
         res.send(result)
 
     })
+       app.patch("/skill/:id",async(req,res)=> {
+        const id = req.params.id
+        const obj = req.body
+        const query = {_id:ObjectId(id)}
+        const docs = {
+            $set:{
+                title:obj.title,
+                label:obj.label
+            }
+        }
+        const result = await skillCollection.updateOne(query,docs)
+        console.log(obj,result)
+        res.send(result)
+
+    })
 
     app.get("/skill",async(req,res)=> {
         const data = await skillCollection.find().toArray()
         res.send(data)
     })
+    app.get("/skill/:id",async(req,res)=> {
+        const id = req.params.id
+        const data = await skillCollection.findOne({_id: ObjectId(id)})
+        res.send(data)
+    })
+
+
     app.delete("/skill/:id",async(req,res)=> {
         const id = req.params.id
         const data = await skillCollection.deleteOne({_id: ObjectId(id)})
