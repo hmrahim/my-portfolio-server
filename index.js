@@ -23,6 +23,9 @@ try {
        const skillCollection = client.db("portfolio").collection("skills")
        const imagesCollection = client.db("portfolio").collection("images")
        const servicesCollection = client.db("portfolio").collection("services")
+       const bannerCollection = client.db("portfolio").collection("banner")
+       const aboutCollection = client.db("portfolio").collection("about")
+       const skillFlagCollection = client.db("portfolio").collection("skillflag")
       
 
 
@@ -150,6 +153,106 @@ app.get("/images",async(req,res)=> {
         res.send(data)
         console.log(data);
     })
+
+
+    //======================== Banner setting apis===========================
+    //======================== Banner setting apis===========================
+    //======================== Banner setting apis===========================
+
+
+    app.put("/banner/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const option = {upsert:true}
+        const query = {_id: ObjectId(id)}
+        const docds = {
+            $set:{
+                name:body.name,
+                about:body.about,
+                button:body.button
+            }
+        }
+         const result = await bannerCollection.updateOne(query,docds,option)
+         res.send(result)
+        console.log(result);
+    })
+
+    app.get("/banner",async(req,res) => {
+        const data = await bannerCollection.findOne()
+        res.send(data)
+
+    })
+
+
+    // ==============about ======================
+    // ==============about ======================
+    // ==============about ======================
+    app.put("/about/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const option = {upsert:true}
+        const query = {_id: ObjectId(id)}
+        const docds = {
+            $set:{
+                title:body.title,
+                about:body.about,
+               
+            }
+        }
+         const result = await aboutCollection.updateOne(query,docds,option)
+         res.send(result)
+        console.log(result);
+
+    })
+
+    app.get("/about",async(req,res) => {
+        const data = await aboutCollection.findOne()
+        res.send(data)
+
+    })
+
+    // ==================skill FLag======================
+    app.post("/skillflag",async(req,res)=> {
+        const body = req.body
+
+        const resut =await skillFlagCollection.insertOne(body)
+        res.send(resut)
+
+        console.log(resut);
+
+    })
+
+    app.get("/skillflag",async(req,res)=> {
+        const data = await skillFlagCollection.find().toArray()
+        res.send(data)
+    })
+    app.delete("/skillflag/:id",async(req,res)=> {
+        const id = req.params.id
+      const result = await skillFlagCollection.deleteOne({_id:ObjectId(id)})
+        res.send(result)
+    })
+
+    app.get("/skillflag/:id",async(req,res)=> {
+        const id = req.params.id
+        const query = {_id:ObjectId(id)}
+        const data = await skillFlagCollection.findOne(query)
+        res.send(data)
+    })
+
+
+    app.patch("/skillflag/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const query = {_id:ObjectId(id)}
+        const docs = {
+            $set:{
+                name:body.name
+            }
+        }
+      const result = await skillFlagCollection.updateOne(query,docs)
+        res.send(result)
+    })
+
 
 
     
