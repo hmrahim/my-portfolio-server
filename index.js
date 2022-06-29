@@ -26,6 +26,8 @@ try {
        const bannerCollection = client.db("portfolio").collection("banner")
        const aboutCollection = client.db("portfolio").collection("about")
        const skillFlagCollection = client.db("portfolio").collection("skillflag")
+       const contactCollection = client.db("portfolio").collection("contact")
+       const footerCollection = client.db("portfolio").collection("footer")
       
 
 
@@ -251,6 +253,64 @@ app.get("/images",async(req,res)=> {
         }
       const result = await skillFlagCollection.updateOne(query,docs)
         res.send(result)
+    })
+
+
+    // ===============contact=========================
+    app.put("/contact/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const option = {upsert:true}
+        const query = {_id: ObjectId(id)}
+        const docds = {
+            $set:{
+                title:body.title,
+                phone:body.phone,
+                email:body.email,
+                address:body.address,
+               
+            }
+        }
+         const result = await contactCollection.updateOne(query,docds,option)
+         res.send(result)
+        console.log(result);
+
+    })
+
+    app.get("/contact",async(req,res)=> {
+        const id = req.params.id
+        const query = {_id:ObjectId(id)}
+        const data = await contactCollection.findOne()
+        res.send(data)
+    })
+
+
+    // ====================footer api==================
+    // ====================footer api==================
+
+    app.put("/footer/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const option = {upsert:true}
+        const query = {_id: ObjectId(id)}
+        const docds = {
+            $set:{
+                copy:body.copy,
+                facebook:body.facebook,
+                instagram:body.instagram,
+                linkedin:body.linkedin,
+               
+            }
+        }
+         const result = await footerCollection.updateOne(query,docds,option)
+         res.send(result)
+        console.log(body);
+
+    })
+
+    app.get("/footer",async(req,res)=> {
+        const data = await footerCollection.findOne()
+        res.send(data)
     })
 
 
