@@ -28,6 +28,8 @@ try {
        const skillFlagCollection = client.db("portfolio").collection("skillflag")
        const contactCollection = client.db("portfolio").collection("contact")
        const footerCollection = client.db("portfolio").collection("footer")
+       const projectCollection = client.db("portfolio").collection("project")
+       const testimonialCollection = client.db("portfolio").collection("testimonial")
       
 
 
@@ -312,7 +314,101 @@ app.get("/images",async(req,res)=> {
         res.send(data)
     })
 
+    // ==================Project api=======================
+    // ==================Project api=======================
+    // ==================Project api=======================
 
+    app.post("/project",async(req,res)=> {
+        const body  = req.body
+        const result =await projectCollection.insertOne(body)
+        res.send(result)
+
+
+    })
+
+    app.get("/project",async(req,res)=> {
+        const data = await projectCollection.find().toArray()
+        res.send(data)
+
+    })
+
+    app.delete("/project/:id",async(req,res)=> {
+        const id = req.params.id
+        const result = await projectCollection.deleteOne({_id:ObjectId(id)})
+        res.send(result)
+        // console.log(result)
+    })
+
+    app.get("/project/:id",async(req,res)=> {
+        const id = req.params.id
+        const data = await projectCollection.findOne({_id:ObjectId(id)})
+        res.send(data)
+       
+
+    })
+
+    app.patch("/project/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const query = {_id:ObjectId(id)}
+        const docs = {
+            $set:{
+                ssu:body.ssu,
+                name:body.name,
+                tech:body.tech,
+                client:body.client,
+                server:body.server,
+                live:body.live,
+            }
+        }
+        const result = await projectCollection.updateOne(query,docs)
+        res.send(result)
+    })
+
+
+    // ===============testimonial ====================
+    // ===============testimonial ====================
+    app.post("/testimonial",async(req,res)=> {
+        const body = req.body
+        const result = testimonialCollection.insertOne(body)
+        res.send(result)
+    })
+
+    app.get("/testimonial",async(req,res)=> {
+      const data =await testimonialCollection.find().toArray()  
+      res.send(data)
+    })
+
+    app.delete("/testimonial/:id",async(req,res)=> {
+        const id = req.params.id
+        const result = await testimonialCollection.deleteOne({_id:ObjectId(id)})
+        res.send(result)
+        // console.log(result,id);
+    })
+
+    app.get("/testimonial/:id",async(req,res)=> {
+        const id = req.params.id
+        const data =await testimonialCollection.findOne({_id:ObjectId(id)}) 
+        res.send(data)
+      })
+    
+
+      app.patch("/testimonial/:id",async(req,res)=> {
+        const id = req.params.id
+        const body = req.body
+        const query = {_id:ObjectId(id)}
+        const docs = {
+            $set:{
+                name:body.name,
+                image:body.image,
+                desig:body.desig,
+                testimonial:body.testimonial,
+                
+            }
+        }
+        const result = await testimonialCollection.updateOne(query,docs)
+        res.send(result)
+    })
 
     
 } finally{
