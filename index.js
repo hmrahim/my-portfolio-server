@@ -172,7 +172,9 @@ app.get("/images",async(req,res)=> {
             $set:{
                 name:body.name,
                 about:body.about,
-                button:body.button
+                button:body.button,
+                image:body.image,
+                logo:body.logo
             }
         }
          const result = await bannerCollection.updateOne(query,docds,option)
@@ -199,6 +201,7 @@ app.get("/images",async(req,res)=> {
             $set:{
                 title:body.title,
                 about:body.about,
+                image:body.image,
                
             }
         }
